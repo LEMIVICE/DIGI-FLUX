@@ -11,6 +11,13 @@
         body { background-color: #000; color: #fff; font-family: 'Space Grotesk', sans-serif; overflow: hidden; }
         .mono-text { font-family: 'JetBrains Mono', monospace; }
         
+        /* Splash Screen Styles */
+        #splash {
+            position: fixed; inset: 0; z-index: 100; background: #000;
+            display: flex; flex-col; items-center; justify-center;
+            transition: opacity 1.5s ease;
+        }
+
         .y2k-glass {
             background: rgba(255, 255, 255, 0.03);
             backdrop-filter: blur(15px);
@@ -23,10 +30,10 @@
 
         #bg-video {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            object-fit: cover; z-index: -1;
+            object-fit: cover; z-index: -1; opacity: 0;
+            transition: opacity 2s ease;
         }
 
-        /* Hero Logo: 450px base + 1.5% scale */
         .logo-container img {
             width: 456px; 
             height: auto;
@@ -50,22 +57,25 @@
         }
         input:focus, textarea:focus { border-color: #f97316; }
 
-        .btn-send {
-            background: #f97316;
-            color: black;
-            font-weight: 800;
-            transition: all 0.3s ease;
-        }
+        .btn-send { background: #f97316; color: black; font-weight: 800; transition: all 0.3s ease; }
         .btn-send:hover { background: #fff; color: #000; transform: scale(1.02); }
     </style>
 </head>
 <body>
 
+    <div id="splash">
+        <div class="mono-text text-[#00ffcc] text-[10px] space-y-2 tracking-[0.3em] text-center">
+            <p id="boot-1">INITIALIZING DIGIFLUX_KERNEL...</p>
+            <p id="boot-2" class="opacity-0">MOUNTING_VISUAL_ASSETS [OK]</p>
+            <p id="boot-3" class="opacity-0">UPLINK_ESTABLISHED // WELCOME</p>
+        </div>
+    </div>
+
     <video id="bg-video" autoplay muted loop playsinline>
         <source src="DIGIFLUX_BG_NEW.mp4" type="video/mp4">
     </video>
 
-    <main id="main-ui" class="relative z-10 h-screen w-full flex flex-col items-center justify-between py-12">
+    <main id="main-ui" class="relative z-10 h-screen w-full flex flex-col items-center justify-between py-12 opacity-0">
         <div class="mt-24 logo-container">
             <img src="DIGIFLUX_ORNG_GLASS_LOGO_v1.png" alt="DIGIFLUX">
         </div>
@@ -85,15 +95,15 @@
         <div class="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto">
             <div class="p-8 border border-white/5 bg-white/5 group hover:bg-orange-500/5 transition-all">
                 <h3 class="text-orange-400 mono-text text-sm mb-4 tracking-tighter">// 01_SCREEN_PRINTING</h3>
-                <p class="text-[11px] opacity-70 leading-relaxed uppercase">Specialized garment architecture. High-definition plastisol, puff-base, and discharge ink systems. Curated for the high-end streetwear sector.</p>
+                <p class="text-[11px] opacity-70 leading-relaxed uppercase">Specialized garment architecture. High-definition plastisol, puff-base, and discharge ink systems.</p>
             </div>
             <div class="p-8 border border-white/5 bg-white/5 group hover:bg-orange-500/5 transition-all">
                 <h3 class="text-orange-400 mono-text text-sm mb-4 tracking-tighter">// 02_GRAPHIC_DESIGN</h3>
-                <p class="text-[11px] opacity-70 leading-relaxed uppercase">Visual identity systems. Vector optimization, custom Y2K typographic treatments, and technical brand manuals for physical/digital integration.</p>
+                <p class="text-[11px] opacity-70 leading-relaxed uppercase">Visual identity systems. Vector optimization, custom Y2K typographic treatments, and technical brand manuals.</p>
             </div>
             <div class="p-8 border border-white/5 bg-white/5 group hover:bg-orange-500/5 transition-all">
                 <h3 class="text-orange-400 mono-text text-sm mb-4 tracking-tighter">// 03_WEB_DESIGN</h3>
-                <p class="text-[11px] opacity-70 leading-relaxed uppercase">High-performance digital frontends. Interactive interfaces designed with software-core aesthetics and fluid UX for high-profile portfolios.</p>
+                <p class="text-[11px] opacity-70 leading-relaxed uppercase">High-performance digital frontends. Bespoke landing pages and interfaces with software-core aesthetics.</p>
             </div>
         </div>
     </div>
@@ -105,19 +115,9 @@
         </div>
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-6xl mx-auto">
             <div class="group relative aspect-video border border-white/10 bg-neutral-900 overflow-hidden">
-                <div class="absolute inset-0 flex items-center justify-center opacity-10 mono-text text-[9px]">ENCRYPTED_FILE_01</div>
                 <div class="absolute inset-0 bg-black/90 opacity-0 group-hover:opacity-100 p-8 flex flex-col justify-end transition-all transform translate-y-2 group-hover:translate-y-0">
-                    <span class="text-orange-500 text-[9px] mono-text mb-2">STATUS: ARCHIVED_2025</span>
+                    <span class="text-orange-500 text-[9px] mono-text mb-2">STATUS: ARCHIVED</span>
                     <h4 class="font-bold text-lg tracking-tight">REDLININ' BRAND IDENTITY</h4>
-                    <p class="text-[10px] opacity-50 mono-text mt-2 uppercase">Physical Goods / Brand Strategy</p>
-                </div>
-            </div>
-            <div class="group relative aspect-video border border-white/10 bg-neutral-900 overflow-hidden">
-                <div class="absolute inset-0 flex items-center justify-center opacity-10 mono-text text-[9px]">ENCRYPTED_FILE_02</div>
-                <div class="absolute inset-0 bg-black/90 opacity-0 group-hover:opacity-100 p-8 flex flex-col justify-end transition-all transform translate-y-2 group-hover:translate-y-0">
-                    <span class="text-orange-500 text-[9px] mono-text mb-2">STATUS: LIVE_SYSTEM</span>
-                    <h4 class="font-bold text-lg tracking-tight">CYBERDASH INTERFACE</h4>
-                    <p class="text-[10px] opacity-50 mono-text mt-2 uppercase">Web Systems / UX-UI</p>
                 </div>
             </div>
         </div>
@@ -129,16 +129,37 @@
             <button onclick="closePanels()" class="mono-text text-xs opacity-50 hover:opacity-100">CLOSE_X</button>
         </div>
         <form action="https://formspree.io/f/xgozgpej" method="POST" class="max-w-xl mx-auto space-y-6">
-            <div class="space-y-4">
-                <input type="text" name="name" placeholder="CLIENT_IDENTIFIER" required class="mono-text text-xs uppercase">
-                <input type="email" name="_replyto" placeholder="UPLINK_EMAIL" required class="mono-text text-xs uppercase">
-                <textarea name="message" rows="5" placeholder="TRANSMIT_PROJECT_SCOPE" required class="mono-text text-xs uppercase"></textarea>
-            </div>
+            <input type="text" name="name" placeholder="CLIENT_IDENTIFIER" required class="mono-text text-xs uppercase">
+            <input type="email" name="_replyto" placeholder="UPLINK_EMAIL" required class="mono-text text-xs uppercase">
+            <textarea name="message" rows="5" placeholder="TRANSMIT_PROJECT_SCOPE" required class="mono-text text-xs uppercase"></textarea>
             <button type="submit" class="w-full py-5 mono-text text-xs tracking-[0.6em] btn-send uppercase">EXECUTE_SEND</button>
         </form>
     </div>
 
     <script>
+        // Splash logic
+        window.addEventListener('load', () => {
+            const boot2 = document.getElementById('boot-2');
+            const boot3 = document.getElementById('boot-3');
+            const splash = document.getElementById('splash');
+            const video = document.getElementById('bg-video');
+            const mainUI = document.getElementById('main-ui');
+
+            setTimeout(() => boot2.style.opacity = "1", 600);
+            setTimeout(() => boot3.style.opacity = "1", 1200);
+
+            setTimeout(() => {
+                splash.style.opacity = "0";
+                video.style.opacity = "1";
+                
+                setTimeout(() => {
+                    splash.remove();
+                    mainUI.style.transition = "opacity 1.5s ease";
+                    mainUI.style.opacity = "1";
+                }, 1000);
+            }, 2800);
+        });
+
         function openPanel(id) {
             closePanels();
             const panel = document.getElementById(id);
