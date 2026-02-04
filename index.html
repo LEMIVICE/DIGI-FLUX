@@ -3,175 +3,155 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DIGIFLUX | High-Velocity Systems</title>
+    <title>DIGIFLUX | Design & Print Systems</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;700&family=JetBrains+Mono&display=swap');
 
-        body {
-            background-color: #000;
-            color: #fff;
-            font-family: 'Space Grotesk', sans-serif;
-            overflow: hidden;
-        }
-
+        body { background-color: #000; color: #fff; font-family: 'Space Grotesk', sans-serif; overflow: hidden; }
+        .mono-text { font-family: 'JetBrains Mono', monospace; }
+        
         .y2k-glass {
             background: rgba(255, 255, 255, 0.03);
             backdrop-filter: blur(15px);
             border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 12px;
+            border-radius: 4px;
             transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
         }
 
-        .y2k-glass:hover {
-            background: rgba(255, 255, 255, 0.1);
-            border: 1px solid rgba(255, 255, 255, 0.3);
-            transform: translateY(-2px);
-        }
+        .y2k-glass:hover { background: rgba(255, 255, 255, 0.1); border: 1px solid rgba(255, 165, 0, 0.5); }
 
         #bg-video {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            z-index: -1;
-            opacity: 0;
-            transition: opacity 2.5s ease-in-out;
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            object-fit: cover; z-index: -1;
         }
 
-        .mono-text { font-family: 'JetBrains Mono', monospace; }
-
-        /* Gallery Overlay */
-        #gallery-overlay {
-            transform: translateY(100%);
-            transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+        /* Hero Logo: 450px base + 1.5% scale */
+        .logo-container img {
+            width: 456px; 
+            height: auto;
+            filter: drop-shadow(0 0 30px rgba(255, 140, 0, 0.25));
         }
 
-        #gallery-overlay.active {
-            transform: translateY(0);
+        .overlay-panel {
+            position: fixed; inset: 0; z-index: 50; background: rgba(0,0,0,0.92);
+            backdrop-filter: blur(30px); transform: translateY(100%);
+            transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+            padding: 40px; display: none;
         }
 
-        .logo-scale {
-            /* Original size was h-32/h-48, increased by 1.5% */
-            height: clamp(130px, 20vw, 195px); 
+        .overlay-panel.active { transform: translateY(0); display: block; }
+        
+        input, textarea {
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.1);
+            padding: 14px; width: 100%; color: white; border-radius: 2px;
+            outline: none; transition: border 0.3s ease;
         }
+        input:focus, textarea:focus { border-color: #f97316; }
 
-        .scanline {
-            width: 100%;
-            height: 2px;
-            background: rgba(255, 255, 255, 0.05);
-            position: absolute;
-            z-index: 20;
-            animation: scan 8s linear infinite;
+        .btn-send {
+            background: #f97316;
+            color: black;
+            font-weight: 800;
+            transition: all 0.3s ease;
         }
-
-        @keyframes scan {
-            0% { top: 0; }
-            100% { top: 100%; }
-        }
+        .btn-send:hover { background: #fff; color: #000; transform: scale(1.02); }
     </style>
 </head>
 <body>
-
-    <div class="scanline"></div>
-
-    <div id="splash" class="fixed inset-0 z-[60] flex flex-col items-center justify-center bg-black">
-        <div class="mono-text text-[#00ffcc] text-[10px] space-y-1 tracking-widest">
-            <p id="boot-1">SYSTEM_BOOT: SUCCESSFUL</p>
-            <p id="boot-2" class="opacity-0">DECRYPTING_GRAPHIC_FILES...</p>
-            <p id="boot-3" class="opacity-0">WELCOME TO DIGIFLUX.</p>
-        </div>
-    </div>
 
     <video id="bg-video" autoplay muted loop playsinline>
         <source src="DIGIFLUX_BG_NEW.mp4" type="video/mp4">
     </video>
 
-    <main id="main-ui" class="relative z-10 h-screen w-full flex flex-col items-center justify-between py-12 opacity-0 transform translate-y-4">
-        
-        <div class="mt-16">
-            <img src="DIGIFLUX_ORNG_GLASS_LOGO_v1.png" alt="DIGIFLUX" class="logo-scale drop-shadow-[0_0_40px_rgba(255,140,0,0.3)]">
+    <main id="main-ui" class="relative z-10 h-screen w-full flex flex-col items-center justify-between py-12">
+        <div class="mt-24 logo-container">
+            <img src="DIGIFLUX_ORNG_GLASS_LOGO_v1.png" alt="DIGIFLUX">
         </div>
 
-        <nav class="flex flex-col md:flex-row gap-4 mb-16 px-4">
-            <button onclick="toggleGallery()" class="y2k-glass px-10 py-4 uppercase tracking-[0.3em] text-[11px] mono-text">
-                [ Vault_01 ]
-            </button>
-            <button class="y2k-glass px-10 py-4 uppercase tracking-[0.3em] text-[11px] mono-text">
-                [ Capabilities ]
-            </button>
-            <button class="y2k-glass px-10 py-4 uppercase tracking-[0.3em] text-[11px] mono-text text-orange-400">
-                [ Connect ]
-            </button>
+        <nav class="flex flex-col md:flex-row gap-6 mb-20">
+            <button onclick="openPanel('gallery')" class="y2k-glass px-12 py-4 uppercase tracking-[0.4em] text-[10px] mono-text">VAULT</button>
+            <button onclick="openPanel('capabilities')" class="y2k-glass px-12 py-4 uppercase tracking-[0.4em] text-[10px] mono-text">SERVICES</button>
+            <button onclick="openPanel('connect')" class="y2k-glass px-12 py-4 uppercase tracking-[0.4em] text-[10px] mono-text text-orange-500 font-bold">CONNECT</button>
         </nav>
-
-        <div class="absolute bottom-6 left-10 flex flex-col gap-1">
-            <p class="mono-text text-[9px] opacity-40 uppercase">v1.0.2_STABLE_BUILD</p>
-            <p class="mono-text text-[9px] opacity-40 uppercase">INDIANAPOLIS_HUB</p>
-        </div>
     </main>
 
-    <section id="gallery-overlay" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-3xl p-10 flex flex-col">
-        <div class="flex justify-between items-center mb-10">
-            <h2 class="mono-text text-xl tracking-[0.5em] text-orange-500 underline underline-offset-8 decoration-1">LATEST_OUTPUTS</h2>
-            <button onclick="toggleGallery()" class="mono-text text-xs border border-white/20 px-4 py-2 hover:bg-white hover:text-black transition-all">CLOSE_X</button>
+    <div id="capabilities" class="overlay-panel">
+        <div class="flex justify-between items-center mb-12 border-b border-white/10 pb-4">
+            <h2 class="mono-text text-xl tracking-[0.5em] text-orange-500">SERVICE_MANIFEST</h2>
+            <button onclick="closePanels()" class="mono-text text-xs opacity-50 hover:opacity-100">CLOSE_X</button>
         </div>
-        
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 overflow-y-auto pr-4">
-            <div class="group relative aspect-video overflow-hidden border border-white/10 hover:border-orange-500/50 transition-all">
-                <div class="absolute inset-0 bg-neutral-900 flex items-center justify-center mono-text text-[10px] text-white/20">PREVIEW_IMG_01</div>
-                <div class="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 flex flex-col justify-end p-6 transition-all">
-                    <p class="text-xs mono-text text-orange-400 mb-1">TYPE: SCREEN_PRINT</p>
-                    <h3 class="font-bold tracking-tighter">PROJECT_NEO_CHROME</h3>
-                </div>
+        <div class="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto">
+            <div class="p-8 border border-white/5 bg-white/5 group hover:bg-orange-500/5 transition-all">
+                <h3 class="text-orange-400 mono-text text-sm mb-4 tracking-tighter">// 01_SCREEN_PRINTING</h3>
+                <p class="text-[11px] opacity-70 leading-relaxed uppercase">Specialized garment architecture. High-definition plastisol, puff-base, and discharge ink systems. Curated for the high-end streetwear sector.</p>
             </div>
-            <div class="group relative aspect-video overflow-hidden border border-white/10 hover:border-orange-500/50 transition-all">
-                <div class="absolute inset-0 bg-neutral-900 flex items-center justify-center mono-text text-[10px] text-white/20">PREVIEW_IMG_02</div>
-                <div class="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 flex flex-col justify-end p-6 transition-all">
-                    <p class="text-xs mono-text text-orange-400 mb-1">TYPE: Y2K_WEB</p>
-                    <h3 class="font-bold tracking-tighter">QUANTUM_INTERFACE_V4</h3>
-                </div>
+            <div class="p-8 border border-white/5 bg-white/5 group hover:bg-orange-500/5 transition-all">
+                <h3 class="text-orange-400 mono-text text-sm mb-4 tracking-tighter">// 02_GRAPHIC_DESIGN</h3>
+                <p class="text-[11px] opacity-70 leading-relaxed uppercase">Visual identity systems. Vector optimization, custom Y2K typographic treatments, and technical brand manuals for physical/digital integration.</p>
             </div>
-            <div class="group relative aspect-video overflow-hidden border border-white/10 hover:border-orange-500/50 transition-all">
-                <div class="absolute inset-0 bg-neutral-900 flex items-center justify-center mono-text text-[10px] text-white/20">PREVIEW_IMG_03</div>
-                <div class="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 flex flex-col justify-end p-6 transition-all">
-                    <p class="text-xs mono-text text-orange-400 mb-1">TYPE: BRAND_DESIGN</p>
-                    <h3 class="font-bold tracking-tighter">AERO_VISUAL_SYSTEM</h3>
-                </div>
+            <div class="p-8 border border-white/5 bg-white/5 group hover:bg-orange-500/5 transition-all">
+                <h3 class="text-orange-400 mono-text text-sm mb-4 tracking-tighter">// 03_WEB_DESIGN</h3>
+                <p class="text-[11px] opacity-70 leading-relaxed uppercase">High-performance digital frontends. Interactive interfaces designed with software-core aesthetics and fluid UX for high-profile portfolios.</p>
             </div>
         </div>
-    </section>
+    </div>
+
+    <div id="gallery" class="overlay-panel">
+        <div class="flex justify-between items-center mb-12 border-b border-white/10 pb-4">
+            <h2 class="mono-text text-xl tracking-[0.5em] text-orange-500">OUTPUT_VAULT</h2>
+            <button onclick="closePanels()" class="mono-text text-xs opacity-50 hover:opacity-100">CLOSE_X</button>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-6xl mx-auto">
+            <div class="group relative aspect-video border border-white/10 bg-neutral-900 overflow-hidden">
+                <div class="absolute inset-0 flex items-center justify-center opacity-10 mono-text text-[9px]">ENCRYPTED_FILE_01</div>
+                <div class="absolute inset-0 bg-black/90 opacity-0 group-hover:opacity-100 p-8 flex flex-col justify-end transition-all transform translate-y-2 group-hover:translate-y-0">
+                    <span class="text-orange-500 text-[9px] mono-text mb-2">STATUS: ARCHIVED_2025</span>
+                    <h4 class="font-bold text-lg tracking-tight">REDLININ' BRAND IDENTITY</h4>
+                    <p class="text-[10px] opacity-50 mono-text mt-2 uppercase">Physical Goods / Brand Strategy</p>
+                </div>
+            </div>
+            <div class="group relative aspect-video border border-white/10 bg-neutral-900 overflow-hidden">
+                <div class="absolute inset-0 flex items-center justify-center opacity-10 mono-text text-[9px]">ENCRYPTED_FILE_02</div>
+                <div class="absolute inset-0 bg-black/90 opacity-0 group-hover:opacity-100 p-8 flex flex-col justify-end transition-all transform translate-y-2 group-hover:translate-y-0">
+                    <span class="text-orange-500 text-[9px] mono-text mb-2">STATUS: LIVE_SYSTEM</span>
+                    <h4 class="font-bold text-lg tracking-tight">CYBERDASH INTERFACE</h4>
+                    <p class="text-[10px] opacity-50 mono-text mt-2 uppercase">Web Systems / UX-UI</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="connect" class="overlay-panel">
+        <div class="flex justify-between items-center mb-12 border-b border-white/10 pb-4">
+            <h2 class="mono-text text-xl tracking-[0.5em] text-orange-500">INITIATE_UPLINK</h2>
+            <button onclick="closePanels()" class="mono-text text-xs opacity-50 hover:opacity-100">CLOSE_X</button>
+        </div>
+        <form action="https://formspree.io/f/xgozgpej" method="POST" class="max-w-xl mx-auto space-y-6">
+            <div class="space-y-4">
+                <input type="text" name="name" placeholder="CLIENT_IDENTIFIER" required class="mono-text text-xs uppercase">
+                <input type="email" name="_replyto" placeholder="UPLINK_EMAIL" required class="mono-text text-xs uppercase">
+                <textarea name="message" rows="5" placeholder="TRANSMIT_PROJECT_SCOPE" required class="mono-text text-xs uppercase"></textarea>
+            </div>
+            <button type="submit" class="w-full py-5 mono-text text-xs tracking-[0.6em] btn-send uppercase">EXECUTE_SEND</button>
+        </form>
+    </div>
 
     <script>
-        function toggleGallery() {
-            document.getElementById('gallery-overlay').classList.toggle('active');
+        function openPanel(id) {
+            closePanels();
+            const panel = document.getElementById(id);
+            panel.style.display = 'block';
+            setTimeout(() => panel.classList.add('active'), 10);
         }
 
-        window.addEventListener('load', () => {
-            const boot2 = document.getElementById('boot-2');
-            const boot3 = document.getElementById('boot-3');
-            const splash = document.getElementById('splash');
-            const video = document.getElementById('bg-video');
-            const mainUI = document.getElementById('main-ui');
-
-            setTimeout(() => boot2.style.opacity = "1", 600);
-            setTimeout(() => boot3.style.opacity = "1", 1200);
-
-            setTimeout(() => {
-                splash.style.transition = "opacity 1.5s ease-in";
-                splash.style.opacity = "0";
-                video.style.opacity = "1";
-                
-                setTimeout(() => {
-                    splash.remove();
-                    mainUI.style.transition = "opacity 2s ease, transform 2s cubic-bezier(0.16, 1, 0.3, 1)";
-                    mainUI.style.opacity = "1";
-                    mainUI.style.transform = "translateY(0)";
-                }, 1000);
-            }, 2800);
-        });
+        function closePanels() {
+            document.querySelectorAll('.overlay-panel').forEach(p => {
+                p.classList.remove('active');
+                setTimeout(() => p.style.display = 'none', 600);
+            });
+        }
     </script>
 </body>
 </html>
