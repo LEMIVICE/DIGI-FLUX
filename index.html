@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DIGIFLUX | High-Velocity Design</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/framer-motion@10.16.4/dist/framer-motion.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;700&family=JetBrains+Mono&display=swap');
+
+        body {
+            background-color: #000;
+            color: #fff;
+            font-family: 'Space Grotesk', sans-serif;
+            overflow: hidden; /* Prevent scrolling during splash */
+        }
+
+        .y2k-glass {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+        }
+
+        #bg-video {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            z-index: -1;
+            opacity: 0;
+            transition: opacity 2s ease-in-out;
+        }
+
+        .mono-text { font-family: 'JetBrains Mono', monospace; }
+    </style>
+</head>
+<body>
+
+    <div id="splash" class="fixed inset-0 z-50 flex flex-col items-center justify-center bg-black">
+        <div class="mono-text text-[#00ffcc] text-xs space-y-1">
+            <p id="boot-1">INITIALIZING SYSTEM...</p>
+            <p id="boot-2" class="opacity-0">LOADING VOLUMETRIC ASSETS...</p>
+            <p id="boot-3" class="opacity-0">ESTABLISHING DIGIFLUX UPLINK...</p>
+        </div>
+    </div>
+
+    <video id="bg-video" autoplay muted loop playsinline>
+        <source src="3D_Elements_Over_Blue_Sky_fhd_3186795.mp4" type="video/mp4">
+    </video>
+
+    <main id="main-ui" class="relative z-10 h-screen w-full flex flex-col items-center justify-between py-12 opacity-0">
+        
+        <div class="mt-20">
+            <img src="DIGIFLUX_ORNG_GLASS_LOGO_v1.png" alt="DIGIFLUX" class="h-32 md:h-48 drop-shadow-[0_0_30px_rgba(255,165,0,0.4)] transition-transform hover:scale-105 duration-500">
+        </div>
+
+        <nav class="flex flex-col md:flex-row gap-6 mb-20 px-4">
+            <button class="y2k-glass px-8 py-4 uppercase tracking-[0.2em] text-sm hover:bg-white hover:text-black transition-all duration-300 mono-text">
+                [ Design_Vault ]
+            </button>
+            <button class="y2k-glass px-8 py-4 uppercase tracking-[0.2em] text-sm hover:bg-white hover:text-black transition-all duration-300 mono-text">
+                [ Screen_Print ]
+            </button>
+            <button class="y2k-glass px-8 py-4 uppercase tracking-[0.2em] text-sm hover:bg-white hover:text-black transition-all duration-300 mono-text">
+                [ Web_Systems ]
+            </button>
+            <button class="y2k-glass px-8 py-4 uppercase tracking-[0.2em] text-sm bg-orange-500/20 border-orange-500/50 hover:bg-orange-500 transition-all duration-300 mono-text">
+                [ Contact_Init ]
+            </button>
+        </nav>
+
+        <div class="absolute bottom-6 left-10 hidden md:block">
+            <p class="mono-text text-[10px] opacity-40 uppercase">Lat: 39.7684° N | Lon: 86.1581° W</p>
+        </div>
+    </main>
+
+    <script>
+        window.addEventListener('load', () => {
+            const boot2 = document.getElementById('boot-2');
+            const boot3 = document.getElementById('boot-3');
+            const splash = document.getElementById('splash');
+            const video = document.getElementById('bg-video');
+            const mainUI = document.getElementById('main-ui');
+
+            // Boot Sequence Animation
+            setTimeout(() => boot2.style.opacity = "1", 500);
+            setTimeout(() => boot3.style.opacity = "1", 1000);
+
+            // Transition to Site
+            setTimeout(() => {
+                splash.style.transition = "opacity 1.5s ease";
+                splash.style.opacity = "0";
+                video.style.opacity = "1";
+                
+                setTimeout(() => {
+                    splash.remove();
+                    mainUI.style.transition = "opacity 2s ease, transform 1.5s cubic-bezier(0.16, 1, 0.3, 1)";
+                    mainUI.style.opacity = "1";
+                    mainUI.style.transform = "translateY(0)";
+                }, 1000);
+            }, 2500);
+        });
+    </script>
+</body>
+</html>
