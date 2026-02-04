@@ -3,9 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DIGIFLUX | High-Velocity Design</title>
+    <title>DIGIFLUX | High-Velocity Systems</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://unpkg.com/framer-motion@10.16.4/dist/framer-motion.js"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;700&family=JetBrains+Mono&display=swap');
 
@@ -13,14 +12,21 @@
             background-color: #000;
             color: #fff;
             font-family: 'Space Grotesk', sans-serif;
-            overflow: hidden; /* Prevent scrolling during splash */
+            overflow: hidden;
         }
 
         .y2k-glass {
-            background: rgba(255, 255, 255, 0.05);
-            backdrop-filter: blur(12px);
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(15px);
             border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 20px;
+            border-radius: 12px;
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .y2k-glass:hover {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            transform: translateY(-2px);
         }
 
         #bg-video {
@@ -32,53 +38,117 @@
             object-fit: cover;
             z-index: -1;
             opacity: 0;
-            transition: opacity 2s ease-in-out;
+            transition: opacity 2.5s ease-in-out;
         }
 
         .mono-text { font-family: 'JetBrains Mono', monospace; }
+
+        /* Gallery Overlay */
+        #gallery-overlay {
+            transform: translateY(100%);
+            transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        #gallery-overlay.active {
+            transform: translateY(0);
+        }
+
+        .logo-scale {
+            /* Original size was h-32/h-48, increased by 1.5% */
+            height: clamp(130px, 20vw, 195px); 
+        }
+
+        .scanline {
+            width: 100%;
+            height: 2px;
+            background: rgba(255, 255, 255, 0.05);
+            position: absolute;
+            z-index: 20;
+            animation: scan 8s linear infinite;
+        }
+
+        @keyframes scan {
+            0% { top: 0; }
+            100% { top: 100%; }
+        }
     </style>
 </head>
 <body>
 
-    <div id="splash" class="fixed inset-0 z-50 flex flex-col items-center justify-center bg-black">
-        <div class="mono-text text-[#00ffcc] text-xs space-y-1">
-            <p id="boot-1">INITIALIZING SYSTEM...</p>
-            <p id="boot-2" class="opacity-0">LOADING VOLUMETRIC ASSETS...</p>
-            <p id="boot-3" class="opacity-0">ESTABLISHING DIGIFLUX UPLINK...</p>
+    <div class="scanline"></div>
+
+    <div id="splash" class="fixed inset-0 z-[60] flex flex-col items-center justify-center bg-black">
+        <div class="mono-text text-[#00ffcc] text-[10px] space-y-1 tracking-widest">
+            <p id="boot-1">SYSTEM_BOOT: SUCCESSFUL</p>
+            <p id="boot-2" class="opacity-0">DECRYPTING_GRAPHIC_FILES...</p>
+            <p id="boot-3" class="opacity-0">WELCOME TO DIGIFLUX.</p>
         </div>
     </div>
 
     <video id="bg-video" autoplay muted loop playsinline>
-        <source src="3D_Elements_Over_Blue_Sky_fhd_3186795.mp4" type="video/mp4">
+        <source src="DIGIFLUX_BG_NEW.mp4" type="video/mp4">
     </video>
 
-    <main id="main-ui" class="relative z-10 h-screen w-full flex flex-col items-center justify-between py-12 opacity-0">
+    <main id="main-ui" class="relative z-10 h-screen w-full flex flex-col items-center justify-between py-12 opacity-0 transform translate-y-4">
         
-        <div class="mt-20">
-            <img src="DIGIFLUX_ORNG_GLASS_LOGO_v1.png" alt="DIGIFLUX" class="h-32 md:h-48 drop-shadow-[0_0_30px_rgba(255,165,0,0.4)] transition-transform hover:scale-105 duration-500">
+        <div class="mt-16">
+            <img src="DIGIFLUX_ORNG_GLASS_LOGO_v1.png" alt="DIGIFLUX" class="logo-scale drop-shadow-[0_0_40px_rgba(255,140,0,0.3)]">
         </div>
 
-        <nav class="flex flex-col md:flex-row gap-6 mb-20 px-4">
-            <button class="y2k-glass px-8 py-4 uppercase tracking-[0.2em] text-sm hover:bg-white hover:text-black transition-all duration-300 mono-text">
-                [ Design_Vault ]
+        <nav class="flex flex-col md:flex-row gap-4 mb-16 px-4">
+            <button onclick="toggleGallery()" class="y2k-glass px-10 py-4 uppercase tracking-[0.3em] text-[11px] mono-text">
+                [ Vault_01 ]
             </button>
-            <button class="y2k-glass px-8 py-4 uppercase tracking-[0.2em] text-sm hover:bg-white hover:text-black transition-all duration-300 mono-text">
-                [ Screen_Print ]
+            <button class="y2k-glass px-10 py-4 uppercase tracking-[0.3em] text-[11px] mono-text">
+                [ Capabilities ]
             </button>
-            <button class="y2k-glass px-8 py-4 uppercase tracking-[0.2em] text-sm hover:bg-white hover:text-black transition-all duration-300 mono-text">
-                [ Web_Systems ]
-            </button>
-            <button class="y2k-glass px-8 py-4 uppercase tracking-[0.2em] text-sm bg-orange-500/20 border-orange-500/50 hover:bg-orange-500 transition-all duration-300 mono-text">
-                [ Contact_Init ]
+            <button class="y2k-glass px-10 py-4 uppercase tracking-[0.3em] text-[11px] mono-text text-orange-400">
+                [ Connect ]
             </button>
         </nav>
 
-        <div class="absolute bottom-6 left-10 hidden md:block">
-            <p class="mono-text text-[10px] opacity-40 uppercase">Lat: 39.7684° N | Lon: 86.1581° W</p>
+        <div class="absolute bottom-6 left-10 flex flex-col gap-1">
+            <p class="mono-text text-[9px] opacity-40 uppercase">v1.0.2_STABLE_BUILD</p>
+            <p class="mono-text text-[9px] opacity-40 uppercase">INDIANAPOLIS_HUB</p>
         </div>
     </main>
 
+    <section id="gallery-overlay" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-3xl p-10 flex flex-col">
+        <div class="flex justify-between items-center mb-10">
+            <h2 class="mono-text text-xl tracking-[0.5em] text-orange-500 underline underline-offset-8 decoration-1">LATEST_OUTPUTS</h2>
+            <button onclick="toggleGallery()" class="mono-text text-xs border border-white/20 px-4 py-2 hover:bg-white hover:text-black transition-all">CLOSE_X</button>
+        </div>
+        
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 overflow-y-auto pr-4">
+            <div class="group relative aspect-video overflow-hidden border border-white/10 hover:border-orange-500/50 transition-all">
+                <div class="absolute inset-0 bg-neutral-900 flex items-center justify-center mono-text text-[10px] text-white/20">PREVIEW_IMG_01</div>
+                <div class="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 flex flex-col justify-end p-6 transition-all">
+                    <p class="text-xs mono-text text-orange-400 mb-1">TYPE: SCREEN_PRINT</p>
+                    <h3 class="font-bold tracking-tighter">PROJECT_NEO_CHROME</h3>
+                </div>
+            </div>
+            <div class="group relative aspect-video overflow-hidden border border-white/10 hover:border-orange-500/50 transition-all">
+                <div class="absolute inset-0 bg-neutral-900 flex items-center justify-center mono-text text-[10px] text-white/20">PREVIEW_IMG_02</div>
+                <div class="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 flex flex-col justify-end p-6 transition-all">
+                    <p class="text-xs mono-text text-orange-400 mb-1">TYPE: Y2K_WEB</p>
+                    <h3 class="font-bold tracking-tighter">QUANTUM_INTERFACE_V4</h3>
+                </div>
+            </div>
+            <div class="group relative aspect-video overflow-hidden border border-white/10 hover:border-orange-500/50 transition-all">
+                <div class="absolute inset-0 bg-neutral-900 flex items-center justify-center mono-text text-[10px] text-white/20">PREVIEW_IMG_03</div>
+                <div class="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 flex flex-col justify-end p-6 transition-all">
+                    <p class="text-xs mono-text text-orange-400 mb-1">TYPE: BRAND_DESIGN</p>
+                    <h3 class="font-bold tracking-tighter">AERO_VISUAL_SYSTEM</h3>
+                </div>
+            </div>
+        </div>
+    </section>
+
     <script>
+        function toggleGallery() {
+            document.getElementById('gallery-overlay').classList.toggle('active');
+        }
+
         window.addEventListener('load', () => {
             const boot2 = document.getElementById('boot-2');
             const boot3 = document.getElementById('boot-3');
@@ -86,23 +156,21 @@
             const video = document.getElementById('bg-video');
             const mainUI = document.getElementById('main-ui');
 
-            // Boot Sequence Animation
-            setTimeout(() => boot2.style.opacity = "1", 500);
-            setTimeout(() => boot3.style.opacity = "1", 1000);
+            setTimeout(() => boot2.style.opacity = "1", 600);
+            setTimeout(() => boot3.style.opacity = "1", 1200);
 
-            // Transition to Site
             setTimeout(() => {
-                splash.style.transition = "opacity 1.5s ease";
+                splash.style.transition = "opacity 1.5s ease-in";
                 splash.style.opacity = "0";
                 video.style.opacity = "1";
                 
                 setTimeout(() => {
                     splash.remove();
-                    mainUI.style.transition = "opacity 2s ease, transform 1.5s cubic-bezier(0.16, 1, 0.3, 1)";
+                    mainUI.style.transition = "opacity 2s ease, transform 2s cubic-bezier(0.16, 1, 0.3, 1)";
                     mainUI.style.opacity = "1";
                     mainUI.style.transform = "translateY(0)";
                 }, 1000);
-            }, 2500);
+            }, 2800);
         });
     </script>
 </body>
