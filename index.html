@@ -8,14 +8,20 @@
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;700&family=JetBrains+Mono&display=swap');
 
-        body { background-color: #000; color: #fff; font-family: 'Space Grotesk', sans-serif; overflow: hidden; }
+        body { background-color: #000; color: #fff; font-family: 'Space Grotesk', sans-serif; overflow: hidden; margin: 0; }
         .mono-text { font-family: 'JetBrains Mono', monospace; }
         
-        /* Splash Screen Styles */
+        /* Fixed Centered Splash Screen */
         #splash {
             position: fixed; inset: 0; z-index: 100; background: #000;
-            display: flex; flex-col; items-center; justify-center;
-            transition: opacity 1.5s ease;
+            display: flex; flex-direction: column; items-center; justify-content: center;
+            transition: opacity 1s ease;
+        }
+
+        #bg-video {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            object-fit: cover; z-index: -1; opacity: 0;
+            transition: opacity 2s ease;
         }
 
         .y2k-glass {
@@ -25,14 +31,7 @@
             border-radius: 4px;
             transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
         }
-
         .y2k-glass:hover { background: rgba(255, 255, 255, 0.1); border: 1px solid rgba(255, 165, 0, 0.5); }
-
-        #bg-video {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            object-fit: cover; z-index: -1; opacity: 0;
-            transition: opacity 2s ease;
-        }
 
         .logo-container img {
             width: 456px; 
@@ -40,34 +39,30 @@
             filter: drop-shadow(0 0 30px rgba(255, 140, 0, 0.25));
         }
 
+        /* Panel Logic Fix */
         .overlay-panel {
-            position: fixed; inset: 0; z-index: 50; background: rgba(0,0,0,0.92);
-            backdrop-filter: blur(30px); transform: translateY(100%);
-            transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
-            padding: 40px; display: none;
+            position: fixed; inset: 0; z-index: 60; background: rgba(0,0,0,0.95);
+            backdrop-filter: blur(40px); display: none; opacity: 0;
+            transition: opacity 0.5s ease;
+            padding: 40px; overflow-y: auto;
         }
-
-        .overlay-panel.active { transform: translateY(0); display: block; }
+        .overlay-panel.active { display: block; opacity: 1; }
         
         input, textarea {
-            background: rgba(255,255,255,0.05);
-            border: 1px solid rgba(255,255,255,0.1);
-            padding: 14px; width: 100%; color: white; border-radius: 2px;
-            outline: none; transition: border 0.3s ease;
+            background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1);
+            padding: 14px; width: 100%; color: white; border-radius: 2px; outline: none;
         }
-        input:focus, textarea:focus { border-color: #f97316; }
-
-        .btn-send { background: #f97316; color: black; font-weight: 800; transition: all 0.3s ease; }
-        .btn-send:hover { background: #fff; color: #000; transform: scale(1.02); }
+        input:focus { border-color: #f97316; }
+        .btn-send { background: #f97316; color: black; font-weight: 800; }
     </style>
 </head>
 <body>
 
     <div id="splash">
-        <div class="mono-text text-[#00ffcc] text-[10px] space-y-2 tracking-[0.3em] text-center">
+        <div class="mono-text text-[#00ffcc] text-[10px] space-y-3 tracking-[0.4em] text-center w-full">
             <p id="boot-1">INITIALIZING DIGIFLUX_KERNEL...</p>
-            <p id="boot-2" class="opacity-0">MOUNTING_VISUAL_ASSETS [OK]</p>
-            <p id="boot-3" class="opacity-0">UPLINK_ESTABLISHED // WELCOME</p>
+            <p id="boot-2" class="opacity-0 transition-opacity duration-500">MOUNTING_VISUAL_ASSETS [OK]</p>
+            <p id="boot-3" class="opacity-0 transition-opacity duration-500">UPLINK_ESTABLISHED // WELCOME</p>
         </div>
     </div>
 
@@ -90,20 +85,20 @@
     <div id="capabilities" class="overlay-panel">
         <div class="flex justify-between items-center mb-12 border-b border-white/10 pb-4">
             <h2 class="mono-text text-xl tracking-[0.5em] text-orange-500">SERVICE_MANIFEST</h2>
-            <button onclick="closePanels()" class="mono-text text-xs opacity-50 hover:opacity-100">CLOSE_X</button>
+            <button onclick="closePanels()" class="mono-text text-xs border border-white/20 px-4 py-1 hover:bg-white hover:text-black">CLOSE_X</button>
         </div>
         <div class="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto">
-            <div class="p-8 border border-white/5 bg-white/5 group hover:bg-orange-500/5 transition-all">
-                <h3 class="text-orange-400 mono-text text-sm mb-4 tracking-tighter">// 01_SCREEN_PRINTING</h3>
-                <p class="text-[11px] opacity-70 leading-relaxed uppercase">Specialized garment architecture. High-definition plastisol, puff-base, and discharge ink systems.</p>
+            <div class="p-8 border border-white/5 bg-white/5 uppercase">
+                <h3 class="text-orange-400 mono-text text-sm mb-4">// 01_SCREEN_PRINTING</h3>
+                <p class="text-[11px] opacity-70 leading-relaxed">High-fidelity garment production. Specialty inks including puff, glow, and metallic.</p>
             </div>
-            <div class="p-8 border border-white/5 bg-white/5 group hover:bg-orange-500/5 transition-all">
-                <h3 class="text-orange-400 mono-text text-sm mb-4 tracking-tighter">// 02_GRAPHIC_DESIGN</h3>
-                <p class="text-[11px] opacity-70 leading-relaxed uppercase">Visual identity systems. Vector optimization, custom Y2K typographic treatments, and technical brand manuals.</p>
+            <div class="p-8 border border-white/5 bg-white/5 uppercase">
+                <h3 class="text-orange-400 mono-text text-sm mb-4">// 02_GRAPHIC_DESIGN</h3>
+                <p class="text-[11px] opacity-70 leading-relaxed">Y2K aesthetic specialization. Vector assets, custom typography, and brand identity systems.</p>
             </div>
-            <div class="p-8 border border-white/5 bg-white/5 group hover:bg-orange-500/5 transition-all">
-                <h3 class="text-orange-400 mono-text text-sm mb-4 tracking-tighter">// 03_WEB_DESIGN</h3>
-                <p class="text-[11px] opacity-70 leading-relaxed uppercase">High-performance digital frontends. Bespoke landing pages and interfaces with software-core aesthetics.</p>
+            <div class="p-8 border border-white/5 bg-white/5 uppercase">
+                <h3 class="text-orange-400 mono-text text-sm mb-4">// 03_WEB_DESIGN</h3>
+                <p class="text-[11px] opacity-70 leading-relaxed">Bespoke digital experiences. High-performance landing pages with software-core aesthetics.</p>
             </div>
         </div>
     </div>
@@ -111,13 +106,13 @@
     <div id="gallery" class="overlay-panel">
         <div class="flex justify-between items-center mb-12 border-b border-white/10 pb-4">
             <h2 class="mono-text text-xl tracking-[0.5em] text-orange-500">OUTPUT_VAULT</h2>
-            <button onclick="closePanels()" class="mono-text text-xs opacity-50 hover:opacity-100">CLOSE_X</button>
+            <button onclick="closePanels()" class="mono-text text-xs border border-white/20 px-4 py-1">CLOSE_X</button>
         </div>
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-6xl mx-auto">
-            <div class="group relative aspect-video border border-white/10 bg-neutral-900 overflow-hidden">
-                <div class="absolute inset-0 bg-black/90 opacity-0 group-hover:opacity-100 p-8 flex flex-col justify-end transition-all transform translate-y-2 group-hover:translate-y-0">
-                    <span class="text-orange-500 text-[9px] mono-text mb-2">STATUS: ARCHIVED</span>
-                    <h4 class="font-bold text-lg tracking-tight">REDLININ' BRAND IDENTITY</h4>
+            <div class="group relative aspect-video border border-white/10 bg-neutral-900">
+                <div class="absolute inset-0 bg-black/90 opacity-0 group-hover:opacity-100 p-8 flex flex-col justify-end transition-all">
+                    <span class="text-orange-500 text-[9px] mono-text mb-2 uppercase">STATUS: ARCHIVED</span>
+                    <h4 class="font-bold text-lg tracking-tight uppercase">REDLININ' BRAND IDENTITY</h4>
                 </div>
             </div>
         </div>
@@ -126,7 +121,7 @@
     <div id="connect" class="overlay-panel">
         <div class="flex justify-between items-center mb-12 border-b border-white/10 pb-4">
             <h2 class="mono-text text-xl tracking-[0.5em] text-orange-500">INITIATE_UPLINK</h2>
-            <button onclick="closePanels()" class="mono-text text-xs opacity-50 hover:opacity-100">CLOSE_X</button>
+            <button onclick="closePanels()" class="mono-text text-xs border border-white/20 px-4 py-1">CLOSE_X</button>
         </div>
         <form action="https://formspree.io/f/xgozgpej" method="POST" class="max-w-xl mx-auto space-y-6">
             <input type="text" name="name" placeholder="CLIENT_IDENTIFIER" required class="mono-text text-xs uppercase">
@@ -145,32 +140,44 @@
             const video = document.getElementById('bg-video');
             const mainUI = document.getElementById('main-ui');
 
-            setTimeout(() => boot2.style.opacity = "1", 600);
-            setTimeout(() => boot3.style.opacity = "1", 1200);
+            setTimeout(() => boot2.classList.replace('opacity-0', 'opacity-100'), 800);
+            setTimeout(() => boot3.classList.replace('opacity-0', 'opacity-100'), 1600);
 
             setTimeout(() => {
                 splash.style.opacity = "0";
                 video.style.opacity = "1";
-                
                 setTimeout(() => {
-                    splash.remove();
+                    splash.style.display = 'none';
                     mainUI.style.transition = "opacity 1.5s ease";
                     mainUI.style.opacity = "1";
                 }, 1000);
-            }, 2800);
+            }, 3000);
         });
 
+        // Fixed Panel Logic
         function openPanel(id) {
-            closePanels();
-            const panel = document.getElementById(id);
-            panel.style.display = 'block';
-            setTimeout(() => panel.classList.add('active'), 10);
+            // Close any currently open panels first
+            const panels = document.querySelectorAll('.overlay-panel');
+            panels.forEach(p => {
+                p.classList.remove('active');
+                p.style.display = 'none';
+            });
+
+            // Open the requested panel
+            const target = document.getElementById(id);
+            target.style.display = 'block';
+            // Use a tiny timeout to ensure display:block is registered before adding opacity
+            setTimeout(() => target.classList.add('active'), 10);
         }
 
         function closePanels() {
-            document.querySelectorAll('.overlay-panel').forEach(p => {
+            const panels = document.querySelectorAll('.overlay-panel');
+            panels.forEach(p => {
                 p.classList.remove('active');
-                setTimeout(() => p.style.display = 'none', 600);
+                // Wait for fade out before hiding
+                setTimeout(() => {
+                    if(!p.classList.contains('active')) p.style.display = 'none';
+                }, 500);
             });
         }
     </script>
